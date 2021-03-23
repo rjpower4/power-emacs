@@ -510,6 +510,9 @@
   "j d" '(dired-jump :wk "dired")
   "j l" '(avy-goto-line :wk "line")
   "j w" '(avy-goto-word-1 :wk "word")
+
+  "g"   '(:ignore t :wk "git")
+  "g s" '(magit-status :wk "status")
   
   "o"   '(:ignore t :which-key "open")
   "o t" '(vterm :which-key "vterm")
