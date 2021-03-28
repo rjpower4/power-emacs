@@ -10,16 +10,20 @@
 ;; External theme packages
 (use-package color-theme-sanityinc-solarized)
 (use-package color-theme-sanityinc-tomorrow)
-(use-package modus-themes)
+(use-package modus-themes
+  :config
+  (setq modus-themes-no-mixed-fonts t
+        modus-themes-org-blocks 'grayscale
+        modus-themes-slanted-constructs t))
 
 (defvar power-light-theme 'modus-operandi)
 (defvar power-dark-theme  'modus-vivendi)
-(load-theme power-light-theme t)
+(load-theme power-dark-theme t)
 
 (defvar power-quick-switch-themes
   (let ((themes-list
-         (list power-light-theme
-               power-dark-theme)))
+         (list power-dark-theme
+               power-light-theme)))
     (nconc themes-list themes-list)))
 
 (defun power/switch-theme ()
@@ -27,10 +31,7 @@
   (interactive)
   (if-let* ((next-theme (cadr power-quick-switch-themes)))
       (progn
-        (when-let* ((current-theme (car power-quick-switch-themes)))
-          (disable-theme (car power-quick-switch-themes)))
-        (load-theme next-theme t)
-        (message "Loaded theme: %s" next-theme)))
+        (consult-theme next-theme)))
   (setq power-quick-switch-themes (cdr power-quick-switch-themes)))
 
 (provide 'power-themes)

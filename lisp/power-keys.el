@@ -29,11 +29,7 @@
         which-key-secondary-delay 0.3))
 
 ;; Better help
-(use-package helpful
-  :general
-  ("C-h f" #'helpful-callable)
-  ("C-h v" #'helpful-variable)
-  ("C-h k" #'helpful-key))
+(use-package helpful)
 
 (provide 'power-keys)
 ;;; power-keys.el ends here
