@@ -6,3 +6,23 @@
 This is my emacs configuration for personal use.
 It is based off of several other emacs configurations.
 It represents a departure away from the vi/m keybindings that I have traditionally used in my editors as I am /trying something new/.
+
+* Desired Functionalities
+
+** Org Mode
+
+** Programming Languages
+
+The programming languages that I am particularly interested in are listed here in alphabetical order:
+
+*** C/C++
+
+*** Clojure
+
+*** Julia
+
+*** LaTeX
+
+** Non-Goals
+
+*** LSP
