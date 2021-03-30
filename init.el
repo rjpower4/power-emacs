@@ -107,9 +107,11 @@
 (require 'power-git)
 
 ;;; Languages
+(require 'power-data)
 (require 'power-latex)
 (require 'power-julia)
 (require 'power-clojure)
+(require 'power-python)
 
 ;;
 ;;; UX Packages
