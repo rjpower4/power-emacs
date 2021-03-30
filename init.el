@@ -156,9 +156,6 @@
  "C-+" #'text-scale-increase
  "C--" #'text-scale-decrease)
 
-(general-define-key
- "C-c o t" '(vterm :wk "termainal"))
-
 (power-key-map
   "M-SPC" '(consult-line :wk "find in buffer")
   
@@ -175,10 +172,11 @@
   "w s" '(split-window-below :wk "horizontal split")
   "w w" '(ace-window :wk "ace-window")
   "w d" '(delete-window :wk "delete")
+  "w u" '(winner-undo :wk "winner undo")
 
   "b"   '(:ignore t :wk "buffer")
   "b b" '(consult-buffer :wk "switch")
-  "b B" '(counsel-ibuffer :wk "ibuffer")
+  "b i" '(ibuffer :wk "ibuffer")
   "b d" '(kill-current-buffer :wk "delete")
   "b D" '(kill-buffer-and-window :wk "delete with window")
 
