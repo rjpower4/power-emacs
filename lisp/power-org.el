@@ -14,22 +14,22 @@
   (org-tags-column 0)
   (org-support-shift-se)
   (org-directory (concat (getenv "HOME") "/Documents/org"))
-  (org-agenda-files (list org-directory))
+  (org-agenda-files (list org-directory
+                          (expand-file-name "journal/" org-directory)))
   (org-use-speed-commands (lambda ()
                             (and (looking-at org-outline-regexp)
                                  (looking-back "%\*"))))
   (org-capture-templates '())
   (org-todo-keywords
-        '((sequence "TODO(t)" "PROG(p)" "WAIT(w)" "ATND(a)" "QUES(q)"
+        '((sequence "TODO(t)" "PROG(p)" "WAIT(w)" "QUES(q)"
                     "|"
                     "DONE(d)" "DEFR(f)" "CANC(c)")))
   (org-todo-keyword-faces
         '(("TODO" . "red")
-          ("PROG" . "gold")
+          ("PROG" . "goldenrod")
           ("WAIT" . "orchid")
-          ("ATND" . "magenta")
           ("QUES" . "salmon")
-          ("DONE" . "green")
+          ("DONE" . "forest green")
           ("DEFR" . "steel blue")
           ("CANC" . "dark gray")))
   (org-archive-mark-done nil)
@@ -49,5 +49,14 @@
      (octave . t)
      (python . t)))) 
 
+(use-package org-journal
+  :after org
+  :config
+  (customize-set-variable 'org-journal-dir
+                          (expand-file-name "journal/" org-directory))
+  (customize-set-variable 'org-journal-file-format "%Y-%m-%d.org")
+  (customize-set-variable 'org-jornal-date-format "%Y-%m-%d")
+  (customize-set-variable 'org-journal-time-prefix "* ")
+  (customize-set-variable 'org-journal-time-format ""))
 (provide 'power-org)
 ;;; power-org.el ends here
