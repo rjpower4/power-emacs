@@ -5,6 +5,7 @@
 ;;; Code:
 
 (use-package projectile
+  :diminish
   :commands (projectile-project-root
              projectile-project-name
              projectile-project-p
