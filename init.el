@@ -178,6 +178,7 @@
   "w w" '(ace-window :wk "ace-window")
   "w d" '(delete-window :wk "delete")
   "w u" '(winner-undo :wk "winner undo")
+  "w o" '(other-window :wk "other window")
 
   "b"   '(:ignore t :wk "buffer")
   "b b" '(consult-buffer :wk "switch")
@@ -202,6 +203,7 @@
   "j l" '(avy-goto-line :wk "line")
   "j L" '(consult-goto-line :wk "line by number")
   "j w" '(avy-goto-word-1 :wk "word")
+  "j b" '(power/switch-to-buffer :wk "buffer across frames")
 
   "g"   '(:ignore t :wk "git")
   "g s" '(magit-status :wk "status")
