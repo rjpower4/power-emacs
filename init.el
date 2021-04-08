@@ -105,6 +105,8 @@
 (require 'power-term)
 (require 'power-company)
 (require 'power-git)
+(require 'power-elfeed)
+(require 'power-irc)
 
 ;;; Languages
 (require 'power-data)
@@ -213,6 +215,8 @@
   "o a" '(org-agenda :wk "agenda")
   "o t" '(vterm :which-key "vterm")
   "o e" '(eshell :which-key "eshell")
+  "o E" '(elfeed :wk "elfeed")
+  "o i" '(circe :wk "irc")
   "o -" '(dired-jump :wk "dired"))
 
 (provide 'init)
