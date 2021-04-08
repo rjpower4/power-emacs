@@ -114,6 +114,7 @@
 (require 'power-julia)
 (require 'power-clojure)
 (require 'power-python)
+(require 'power-rust)
 
 ;;
 ;;; UX Packages
