@@ -46,7 +46,7 @@
 (defconst IS-WINDOWS (memq system-type '(cygwin windows-nt ms-dos)))
 (defconst IS-BSD     (or IS-MAC (eq system-type 'berkely-unix)))
 (defconst power-emacs-dir user-emacs-directory)
-(defconst power-leader-key "M-SPC" "Leader prefix key")
+(defconst power-leader-key "C-c" "Leader prefix key")
 (defvar power-font nil "Default font")
 (defvar power-variable-pitch-font nil "The default font for variable-pitch text.")
 (defvar doom-serif-font nil "The default font for `fixed-pitch-serif' face.")
@@ -161,65 +161,108 @@
  "C-+" #'text-scale-increase
  "C--" #'text-scale-decrease)
 
+(general-create-definer window-definer
+  :prefix "C-x w"
+  :wk "window")
+
+(window-definer
+  "v" '(split-window-right :wk "vertical split")
+  "s" '(split-window-below :wk "horizontal split")
+  "w" '(ace-window :wk "ace-window")
+  "d" '(delete-window :wk "delete")
+  "u" '(winner-undo :wk "winner undo")
+  "o" '(other-window :wk "other window"))
+
+(general-create-definer help-definer
+  :prefix "C-c h")
+
+(help-definer
+  ""  '(:ignore t :wk "help")
+  "f" '(helpful-callable :which-key "function")
+  "v" '(helpful-variable :wk "variable")
+  "k" '(helpful-key :wk "key")
+  "a" '(consult-apropos :wk "apropos")
+  "m" '(describe-mode :wk "mode")
+  "M" '(consult-man :wk "man"))
+
+(general-create-definer buffer-definer
+  :prefix "C-c b")
+
+(buffer-definer
+ ""  '(:ignore t :wk "buffer")
+ "b" '(consult-buffer :wk "switch")
+ "i" '(ibuffer :wk "ibuffer")
+ "d" '(kill-current-buffer :wk "delete")
+ "D" '(kill-buffer-and-window :wk "delete with window"))
+
+(general-create-definer file-definer
+  :prefix "C-c f")
+
+(file-definer
+  ""  '(:ignore t :wk "file")
+  "f" '(find-file :wk "find file")
+  "r" '(consult-recent-file :wk "recentf")
+  "s" '(save-buffer :wk "save buffer")
+  "i" '(crux-find-user-init-file :wk "open init"))
+
+(general-create-definer search-definer
+  :prefix "C-c s")
+
+(search-definer
+  ""  '(:ignore t :wk "search")
+  "s" '(consult-line :wk "buffer")
+  "d" '(consult-ripgrep :wk "directory"))
+
+
+(general-create-definer jump-definer
+  :prefix "C-c j")
+
+(jump-definer
+  ""  '(:ignore t :wk "jump")
+  "c" '(avy-goto-char-2 :wk "char")
+  "d" '(dired-jump :wk "dired")
+  "d" '(dired-jump-other-window :wk "dired other window")
+  "l" '(avy-goto-line :wk "line")
+  "L" '(consult-goto-line :wk "line by number")
+  "w" '(avy-goto-word-1 :wk "word")
+  "b" '(power/switch-to-buffer :wk "buffer across frames"))
+
+(general-create-definer git-definer
+  :prefix "C-c g")
+
+(git-definer
+ ""  '(:ignore t :wk "git")
+ "s" '(magit-status :wk "status"))
+
+(general-create-definer toggle-definer
+  :prefix "C-c t")
+
+(toggle-definer
+ ""  '(:ignore t :wk "toggle")
+ "t" '(power/switch-theme :wk "theme"))
+
+(general-create-definer project-definer
+  :prefix "C-c p")
+
+(project-definer
+ ""  '(:ignore t :wk "project")
+ "f" '(project-find-file :wk "find file"))
+
+(general-create-definer open-definer
+  :prefix "C-c o")
+
+(open-definer
+  ""   '(:ignore t :which-key "open")
+  "a"  '(org-agenda :wk "agenda")
+  "t"  '(vterm :which-key "vterm")
+  "e"  '(eshell :which-key "eshell")
+  "E"  '(elfeed :wk "elfeed")
+  "i"  '(circe :wk "irc")
+  "-"  '(dired-jump :wk "dired"))
+
 (power-key-map
-  "M-SPC" '(consult-line :wk "find in buffer")
-  
-  "h"   '(:ignore t :which-key "help")
-  "h f" '(helpful-callable :which-key "function")
-  "h v" '(helpful-variable :wk "variable")
-  "h k" '(helpful-key :wk "key")
-  "h a" '(consult-apropos :wk "apropos")
-  "h m" '(describe-mode :wk "mode")
-  "h M" '(consult-man :wk "man")
+  "SPC" '(consult-line :wk "find in buffer"))
 
-  "w"   '(:ignore t :wk "window")
-  "w v" '(split-window-right :wk "vertical split")
-  "w s" '(split-window-below :wk "horizontal split")
-  "w w" '(ace-window :wk "ace-window")
-  "w d" '(delete-window :wk "delete")
-  "w u" '(winner-undo :wk "winner undo")
-  "w o" '(other-window :wk "other window")
 
-  "b"   '(:ignore t :wk "buffer")
-  "b b" '(consult-buffer :wk "switch")
-  "b i" '(ibuffer :wk "ibuffer")
-  "b d" '(kill-current-buffer :wk "delete")
-  "b D" '(kill-buffer-and-window :wk "delete with window")
-
-  "f"   '(:ignore t :wk "file")
-  "f f" '(find-file :wk "find file")
-  "f r" '(consult-recent-file :wk "recentf")
-  "f s" '(save-buffer :wk "save buffer")
-  "f i" '(crux-find-user-init-file :wk "open init")
-
-  "s"   '(:ignore t :wk "search")
-  "s s" '(consult-line :wk "buffer")
-  "s d" '(consult-ripgrep :wk "directory")
-
-  "j"   '(:ignore t :wk "jump")
-  "j c" '(avy-goto-char-2 :wk "char")
-  "j d" '(dired-jump :wk "dired")
-  "j d" '(dired-jump-other-window :wk "dired other window")
-  "j l" '(avy-goto-line :wk "line")
-  "j L" '(consult-goto-line :wk "line by number")
-  "j w" '(avy-goto-word-1 :wk "word")
-  "j b" '(power/switch-to-buffer :wk "buffer across frames")
-
-  "g"   '(:ignore t :wk "git")
-  "g s" '(magit-status :wk "status")
-
-  "t"   '(:ignore t :wk "toggle")
-  "t t" '(power/switch-theme :wk "theme")
-
-  "p"   '(:ignore t :wk "project")
-  "p f" '(project-find-file :wk "find file")
-  
-  "o"   '(:ignore t :which-key "open")
-  "o a" '(org-agenda :wk "agenda")
-  "o t" '(vterm :which-key "vterm")
-  "o e" '(eshell :which-key "eshell")
-  "o E" '(elfeed :wk "elfeed")
-  "o i" '(circe :wk "irc")
-  "o -" '(dired-jump :wk "dired"))
 
 (provide 'init)
