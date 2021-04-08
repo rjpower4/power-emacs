@@ -18,7 +18,7 @@
 
 (defvar power-light-theme 'modus-operandi)
 (defvar power-dark-theme  'modus-vivendi)
-(load-theme power-dark-theme t)
+(load-theme power-light-theme t)
 
 (defvar power-quick-switch-themes
   (let ((themes-list
