@@ -16,14 +16,40 @@
         modus-themes-org-blocks 'grayscale
         modus-themes-slanted-constructs t))
 
+;; Set location for sunrise/sunset
+(setq calendar-latitude 40.424660)
+(setq calendar-longitude -86.848460)
+
 (defvar power-light-theme 'modus-operandi)
 (defvar power-dark-theme  'modus-vivendi)
-(load-theme power-light-theme t)
+
+(defun power/night-mode ()
+  "Set the theme to a dark mode"
+  (interactive)
+  (consult-theme power-dark-theme))
+
+(defun power/day-mode ()
+  "Set the theme to a light mode"
+  (interactive)
+  (consult-theme power-light-theme))
+
+(defun power/auto-theme ()
+  "Select the theme automatically based on the time of day."
+  (require 'solar)
+  (let* ((cur-hour (string-to-number (substring (current-time-string) 11 13)))
+         (sun-events (solar-sunrise-sunset (calendar-current-date)))
+         (sunrise (caar sun-events))
+         (sunset (caadr sun-events)))
+    (if (and (> cur-hour sunrise) (< cur-hour sunset))
+        (power/day-mode)
+      (power/night-mode))))
+
+(power/auto-theme)
 
 (defvar power-quick-switch-themes
   (let ((themes-list
-         (list power-dark-theme
-               power-light-theme)))
+         (list power-light-theme
+               power-dark-theme)))
     (nconc themes-list themes-list)))
 
 (defun power/switch-theme ()
