@@ -9,6 +9,7 @@
 (use-package pip-requirements)
 
 (use-package anaconda-mode
+  :defer t
   :config
   (add-hook 'python-mode-hook
             (lambda () (unless (file-remote-p default-directory)

@@ -4,9 +4,11 @@
 
 ;;; Code:
 
-(use-package julia-mode)
+(use-package julia-mode
+  :defer t)
 
 (use-package julia-repl
+  :defer t
   :config
   (julia-repl-set-terminal-backend 'vterm)
   (set-language-environment "UTF-8")

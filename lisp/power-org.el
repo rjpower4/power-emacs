@@ -7,13 +7,14 @@
 ;; Org Mode
 (use-package org
   :ensure nil
+  :defer t
   :custom
   (org-confirm-babel-evaluate nil)
   (org-edit-src-content-indentation 0)
   (org-export-coding-system 'utf-8)
   (org-tags-column 0)
   (org-support-shift-se)
-  (org-directory (concat (getenv "HOME") "/Documents/org"))
+  (org-directory (concat (getenv "HOME") "/Dropbox/org"))
   (org-agenda-files (list org-directory
                           (expand-file-name "journal/" org-directory)))
   (org-use-speed-commands (lambda ()
@@ -37,17 +38,16 @@
   :config
   (add-hook 'org-mode-hook 'org-indent-mode)
   (eval-after-load 'org-indent
-    (lambda () (diminish 'org-indent-mode))))
-
-;; Babel
-(with-eval-after-load 'org
+    (lambda () (diminish 'org-indent-mode)))
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
      (gnuplot . t)
      (latex . t)
      (octave . t)
-     (python . t)))) 
+     (python . t))))
+
+;; ) 
 
 (use-package org-journal
   :after org

@@ -6,6 +6,7 @@
 ;;; Code:
 
 (use-package magit
+  :defer t
   :config
   (setq-default magit-diff-refine-hunk t)
   (use-package magit-todos)

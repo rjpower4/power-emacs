@@ -4,9 +4,11 @@
 
 ;;; Code:
 
-(use-package vterm)
+(use-package vterm
+  :defer t)
 
 (use-package eterm-256color
+  :defer t
   :ensure t
   :config
   (add-hook 'term-mode-hook #'eterm-256color-mode)

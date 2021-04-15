@@ -29,7 +29,8 @@
         which-key-secondary-delay 0.3))
 
 ;; Better help
-(use-package helpful)
+(use-package helpful
+  :defer t)
 
 (provide 'power-keys)
 ;;; power-keys.el ends here

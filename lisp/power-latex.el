@@ -5,6 +5,7 @@
 ;;; Code
 
 (use-package pdf-tools-install
+  :defer t
   :ensure pdf-tools
   :if (not IS-WINDOWS)
   :mode "\\.pdf\\'"
@@ -18,6 +19,7 @@
   
 
 (use-package tex
+  :defer t
   :ensure auctex
   :bind (:map TeX-mode-map
               ("C-c C-o" . TeX-recenter-output-buffer)
@@ -46,6 +48,7 @@
   (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer))
 
 (use-package reftex
+  :defer t
   :ensure nil
   :hook (LaTeX-mode . reftex-mode)
   :custom
@@ -67,6 +70,7 @@
             (lambda () (reftex-toc-rescan))))
 
 (use-package bibtex
+  :defer t
   :after auctex
   :hook (bibtex-mode . power-bibtex-fill-column)
   :preface
@@ -75,17 +79,21 @@
     (setq fill-column 120)))
 
 (use-package company-auctex
+  :defer t
   :after (auctex company)
   :config (company-auctex-init))
 
 (use-package company-math :after (auctex company))
-(use-package company-reftex)
+(use-package company-reftex
+  :defer t)
 
 (use-package latex-preview-pane
+  :defer t
   :config
   (latex-preview-pane-enable))
 
 (use-package preview
+  :defer t
   :ensure nil
   :hook (LaTeX-mode . LaTeX-preview-setup)
   :config

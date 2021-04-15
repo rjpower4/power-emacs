@@ -6,6 +6,7 @@
 
 ;; Recent files
 (use-package recentf
+  :defer 1
   :ensure nil
   :commands recentf-open-files
   :hook (after-init . recentf-mode)
@@ -20,8 +21,14 @@
                 (recentf-add-file buffer-file-name))
               nil)))
 
+;; Defer this for a little
+(use-package uniquify
+  :defer 2
+  :ensure nil)
+
 ;; Go back to where I was
 (use-package saveplace
+  :defer 2
   :ensure nil
   :hook (after-init . save-place-mode)
   :init
@@ -45,6 +52,7 @@
 
 ;; Automatically update packages
 (use-package auto-package-update
+  :defer 3
   :after no-littering
   :if (not (daemonp))
   :custom
@@ -92,14 +100,6 @@
 ;; Don't resize in steps
 (setq frame-resize-pixelwise t)
 (setq window-resize-pizelwise nil)
-
-;; Tool, menu, scrollbar
-(push '(menu-bar-lines . 0) default-frame-alist)
-(push '(tool-bar-lines . 0) default-frame-alist)
-(push '(vertical-scroll-bars) default-frame-alist)
-(setq menu-bar-mode nil
-      tool-bar-mode nil
-      scroll-bar-mode nil)
 
 ;; Avoid GUI
 (setq use-dialog-box nil)
@@ -226,6 +226,7 @@
 
 ;; Pull in the PATH variable from shell
 (use-package exec-path-from-shell
+  :defer t
   :config
   (exec-path-from-shell-copy-env
    "JULIA_DEPOT_PATH")

@@ -23,6 +23,7 @@
   (global-company-mode 1))
 
 (use-package company-tabnine
+  :defer t
   :config
   (setq company-idle-delay 0))
 

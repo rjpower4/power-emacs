@@ -6,6 +6,7 @@
 
 
 (use-package circe
+  :defer t
   :config
   (require 'auth-source)
   (auth-source-pass-enable)

@@ -5,6 +5,7 @@
 ;;; Code:
 
 (use-package clojure-mode
+  :defer t
   :config
   (add-hook 'clojure-mode #'smartparens-strict-mode)
   (use-package aggressive-indent
@@ -13,6 +14,8 @@
   (use-package clojure-mode-extra-font-locking))
 
 (use-package cider
+  :defer t
+  :diminish subword-mode
   :config
   (add-hook 'cider-repl-mode-hook #'subword-mode)
   (add-hook 'cider-repl-mode-hook #'smartparens-strict-mode)
@@ -23,6 +26,7 @@
   (setq cider-font-lock-dynamically '(macro core function var)))
 
 (use-package clj-refactor
+  :defer t
   :config
   (add-hook 'clojure-mode-hook #'clj-refactor-mode))
 

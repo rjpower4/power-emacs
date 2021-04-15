@@ -5,6 +5,7 @@
 ;;; Code:
 
 (use-package projectile
+  :defer 3
   :diminish
   :commands (projectile-project-root
              projectile-project-name

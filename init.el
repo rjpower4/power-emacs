@@ -14,8 +14,17 @@
 ;;
 ;;; Load Early init if it wasn't loaded
 (unless (boundp 'power-version)
-  (load (concat (file-name-directory load-file-name) "early-init")
+  (load "early-init"
 	    nil t))
+
+;; Benchmark startup
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (message "Emacs ready in %s with %d garbage collections."
+                     (format "%.2f seconds"
+                             (float-time (time-subtract after-init-time
+                                                        before-init-time)))
+                     gcs-done)))
 
 ;;
 ;;; Garbage Collection
@@ -36,20 +45,12 @@
 
 ;;
 ;;; Constants & Variables
-(defconst power-version "0.0.1" "Current version of PowerEmacs")
-(defconst power-init-p nil "Non-nil if PowerEmacs has been initialized")
-(defconst power-interactive-p (not noninteractive) "If non-nil, Emacs is interactive")
-(defconst power-debug-p (or (getenv-internal "DEBUG") init-file-debug) "Log more?")
 (defconst EMACS27+   (> emacs-major-version 26))
 (defconst IS-MAC     (eq system-type 'darwin))
 (defconst IS-LINUX   (eq system-type 'gnu/linux))
 (defconst IS-WINDOWS (memq system-type '(cygwin windows-nt ms-dos)))
 (defconst IS-BSD     (or IS-MAC (eq system-type 'berkely-unix)))
-(defconst power-emacs-dir user-emacs-directory)
 (defconst power-leader-key "C-c" "Leader prefix key")
-(defvar power-font nil "Default font")
-(defvar power-variable-pitch-font nil "The default font for variable-pitch text.")
-(defvar doom-serif-font nil "The default font for `fixed-pitch-serif' face.")
 
 ;;
 ;;; UTF-8
@@ -79,7 +80,7 @@
 (setq frame-inhibit-implied-resize t)
 (setq gcmh-idle-delay 5
       gcmh-high-cons-threshold (* 16 (* 1024 1024)) ; 16 mb
-      gcmh-verbose power-debug-p)
+      gcmh-verbose nil)
 (setq idle-update-delay 1.0)
 (setq redisplay-skip-fontification-on-input t)
 (unless IS-LINUX (setq command-line-x-option-alist nil))
@@ -88,14 +89,17 @@
 ;;; Package setup
 (require 'power-package)
 
+;; Optimizations
+(use-package esup
+  :ensure t
+  ;; To use MELPA Stable use ":pin melpa-stable",
+  :pin melpa)
+
 ;;; Basic Config
 (require 'power-core)
 (require 'power-keys)
 (require 'power-crux)
 (require 'power-dired)
-
-;;; Appearance
-(require 'power-themes)
 
 ;;; Tools
 (require 'power-org)
@@ -107,6 +111,13 @@
 (require 'power-git)
 (require 'power-elfeed)
 (require 'power-irc)
+(require 'power-fly)
+(require 'power-snippets)
+(require 'power-lsp)
+
+;;; Appearance
+(require 'power-themes)
+
 
 ;;; Languages
 (require 'power-data)
