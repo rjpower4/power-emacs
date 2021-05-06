@@ -226,7 +226,6 @@
 
 ;; Pull in the PATH variable from shell
 (use-package exec-path-from-shell
-  :defer t
   :config
   (exec-path-from-shell-copy-env
    "JULIA_DEPOT_PATH")
