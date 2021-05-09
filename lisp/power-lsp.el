@@ -17,7 +17,7 @@
   (:keymaps 'lsp-mode-map
             "C-c C-f" 'lsp-format-buffer)
   :hook
-  ((java-mode python-mode c-mode c++-mode latex-mode) . lsp))
+  ((java-mode python-mode c-mode c++-mode latex-mode rust-mode) . lsp))
 
 
 (provide 'power-lsp)
