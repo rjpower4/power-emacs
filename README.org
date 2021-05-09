@@ -23,6 +23,9 @@ The programming languages that I am particularly interested in are listed here i
 
 *** LaTeX
 
+*** Rust
+
 ** Non-Goals
 
-*** LSP
+*** Generality
+
