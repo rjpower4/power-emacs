@@ -257,7 +257,8 @@
 
 (project-definer
  ""  '(:ignore t :wk "project")
- "f" '(project-find-file :wk "find file"))
+ "f" '(project-find-file :wk "find file")
+ "p" '(project-switch-project :wk "switch project"))
 
 (general-create-definer open-definer
   :prefix "C-c o")
