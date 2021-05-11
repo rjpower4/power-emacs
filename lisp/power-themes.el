@@ -7,7 +7,11 @@
 ;; Icons
 (use-package all-the-icons)
 
+;; Fonts
+(set-face-attribute 'default nil :height 130)
+
 ;; External theme packages
+(use-package doom-themes)
 (use-package color-theme-sanityinc-solarized)
 (use-package color-theme-sanityinc-tomorrow)
 (use-package modus-themes
