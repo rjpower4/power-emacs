@@ -1,4 +1,3 @@
-
 ;;; early-init.el --- -*- lexical-binding: t; -*-
 
 ;; Garbage collection slows down start up, so we increase
@@ -23,7 +22,7 @@
   (add-hook 'emacs-startup-hook #'power/reset-file-handler-alist-h))
 
 ;; Version
-(defconst power-version "0.0.1" "Current version of PowerEmacs")
+(defconst power-version "0.0.2" "Current version of PowerEmacs")
 
 ;; Don't enable the ui stuff
 (menu-bar-mode -1)
