@@ -162,15 +162,15 @@
 ;;; Key Bindings
 
 (general-define-key
- "<f5>" #'power/switch-theme
- "M-n" #'forward-paragraph
- "M-p" #'backward-paragraph
+ "<f5>"  #'power/switch-theme
+ "M-n"   #'forward-paragraph
+ "M-p"   #'backward-paragraph
  "C-h f" #'helpful-callable
  "C-h v" #'helpful-variable
  "C-h k" #'helpful-key
- "C-=" #'power/text-scale-default
- "C-+" #'text-scale-increase
- "C--" #'text-scale-decrease)
+ "C-="   #'power/text-scale-default
+ "C-+"   #'text-scale-increase
+ "C--"   #'text-scale-decrease)
 
 (general-create-definer window-definer
   :prefix "C-x w"
