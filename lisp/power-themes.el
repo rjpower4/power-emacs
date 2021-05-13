@@ -8,7 +8,7 @@
 (use-package all-the-icons)
 
 ;; Fonts
-(set-face-attribute 'default nil :height 130)
+(set-face-attribute 'default nil :height 110)
 
 ;; External theme packages
 (use-package doom-themes)
