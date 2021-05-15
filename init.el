@@ -825,6 +825,8 @@ ring."
   :defer t
   :commands lsp
   :custom
+  (lsp-session-file (concat power-cache-dir "lsp-session-v1"))
+  (lsp-server-install-dir (concat power-cache-dir "lsp-server-install/"))
   (lsp-auto-guess-root nil)
   (lsp-prefer-flymake nil)
   (lsp-file-watch-threshold 1000)
