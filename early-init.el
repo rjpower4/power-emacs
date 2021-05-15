@@ -21,9 +21,6 @@
     (setq file-name-handler-alist power--initial-file-name-handler-alist))
   (add-hook 'emacs-startup-hook #'power/reset-file-handler-alist-h))
 
-;; Version
-(defconst power-version "0.0.2" "Current version of PowerEmacs")
-
 ;; Don't enable the ui stuff
 (menu-bar-mode -1)
 (push '(tool-bar-lines . 0) default-frame-alist)
