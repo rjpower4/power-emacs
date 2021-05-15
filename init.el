@@ -708,9 +708,9 @@ ring."
   :straight t
   :defer t
   :custom
-  (transient-levels-file  (concat power-etc-dir "transient/levels")
-  (transient-values-file  (concat power-etc-dir "transient/values")
-  (transient-history-file (concat power-etc-dir "transient/history")
+  (transient-levels-file  (concat power-etc-dir "transient/levels"))
+  (transient-values-file  (concat power-etc-dir "transient/values"))
+  (transient-history-file (concat power-etc-dir "transient/history"))
   :config
   (setq-default magit-diff-refine-hunk t)
   (use-package magit-todos :straight t)
