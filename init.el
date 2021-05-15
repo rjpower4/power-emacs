@@ -48,10 +48,10 @@
 
 ;; Directories
 (defconst power-emacs-dir user-emacs-directory)
-(defconst power-core-dir (concat power-emacs-dir "core/"))
 (defconst power-local-dir (concat power-emacs-dir ".local/"))
-(defconst power-etc-dir (concat power-emacs-dir "etc/"))
-(defconst power-cache-dir (concat power-emacs-dir "cache/"))
+(defconst power-cache-dir (concat power-local-dir "cache/"))
+(defconst power-core-dir (concat power-local-dir "core/"))
+(defconst power-etc-dir (concat power-local-dir "etc/"))
 
 ;; About Me
 (setq calendar-latitude 40.424660)
