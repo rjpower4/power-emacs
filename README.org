@@ -17,7 +17,7 @@ git clone https://github.com/rjpower4/power-emacs.git ~/.config/emacs
 #+end_src
 
 Then, simply run Emacs.
-`straight.el` will manage package installation.
+=straight.el= will manage package installation.
 
 * Used Packages
 | Package            | Usage                                                         |
