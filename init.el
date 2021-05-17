@@ -862,16 +862,101 @@ ring."
   ;(add-hook 'cider-repl-mode-hook #'smartparens-strict-mode)
   (add-hook 'cider-repl-mode-hook #'company-mode)
   :custom
-  (cider-repl-wrap-history t)
-  (cider-repl-history-file (concat power-cache-dir "cider-history"))
+  (nrepl-hide-special-buffers t)
+  (nrepl-log-messages nil)
+  (cider-font-lock-dynamically '(macro core function var deprecated))
+  (cider-overlays-use-font-lock t)
+  (cider-prompt-for-symbol nil)
+  (cider-repl-history-display-duplicates nil)
+  (cider-repl-history-display-stile 'one-line)
+  (cider-repl-history-file (concat power-cache-dir "cider-repl-history"))
+  (cider-repl-history-highlight-current-entry t)
+  (cider-repl-history-quit-action 'delete-and-restore)
+  (cider-repl-history-highlight-inserted-item t)
+  (cider-repl-history-size 1000)
+  (cider-repl-result-prefix ";; => ")
+  (cider-repl-print-length 100)
+  (cider-repl-user-clojure-font-lock t)
+  (cider-repl-use-pretty-printing t)
+  (cider-repl-wrap-history nil)
   (cider-save-file-on-load t)
-  (cider-font-lock-dynamically '(macro core function var)))
+  (cider-stacktrace-default-filters '(tooling dup))
+  (cider-repl-pop-to-buffer-on-connect 'display-only))
 
 (use-package clj-refactor
   :straight t
   :defer t
   :config
   (add-hook 'clojure-mode-hook #'clj-refactor-mode))
+
+;; --------------------------------------------------------------------------- #
+;;; Common Lisp 
+;; --------------------------------------------------------------------------- #
+;; Use SBCL for lisp
+(setq inferior-lisp-program "sbcl")
+
+(use-package sly
+  :straight t
+  :defer t
+  :custom
+  (sly-mrepl-history-file-name (concat power-cache-dir "sly-mrepl-history"))
+  (sly-kill-without-query-p t)
+  (sly-net-coding-system 'utf-8-unix)
+  (sly-complete-symbol-function 'sly-simple-completions)
+  :config
+  (sly-setup))
+
+;; --------------------------------------------------------------------------- #
+;;; CSV
+;; --------------------------------------------------------------------------- #
+(use-package csv-mode
+  :straight t
+  :defer t
+  :general
+  (:keymaps 'csv-mode-map
+            "C-c m a" #'csv-align-fields
+            "C-c m u" #'csv-unalign-fields
+            "C-c m s" #'csv-sort-fields
+            "C-c m S" #'csv-sort-numeric-fields
+            "C-c m k" #'csv-kill-fields
+            "C-c m t" #'csv-transpose))
+
+;; --------------------------------------------------------------------------- #
+;;; Emacs Lisp 
+;; --------------------------------------------------------------------------- #
+(use-package elisp-mode
+  :straight (elisp-mode :type built-in)
+  :defer t
+  :hook (emacs-lisp-mode . rainbow-delimiters-mode))
+
+;; --------------------------------------------------------------------------- #
+;;; Go
+;; --------------------------------------------------------------------------- #
+(use-package go-mode
+  :straight t
+  :defer t)
+
+(use-package company-go
+  :straight t
+  :after go-mode
+  :custom
+  (company-go-show-annotation t))
+
+(use-package go-eldoc
+  :straight t
+  :defer t)
+
+(use-package go-guru
+  :straight t
+  :defer t)
+
+(use-package go-tag
+  :straight t
+  :defer t)
+
+(use-package go-gen-test
+  :straight t
+  :defer t)
 
 ;; --------------------------------------------------------------------------- #
 ;;; Julia
