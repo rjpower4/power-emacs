@@ -8,6 +8,17 @@ It is based off of several other emacs configurations.
 It represents a departure away from the vi/m keybindings that I have traditionally used in my editors as I am /trying something new/.
 It is probably not of any use to anyone but me, but feel free to use it as a basis
 
+* Installation
+
+To install this Emacs configuration, clone this repository to the configuration directory
+
+```sh
+git clone git@github.com:rjpower4/power-emacs.git ~/.config/emacs
+```
+
+Then, simply run Emacs.
+`straight.el` will manage package installation.
+
 * Used Packages
 | Package            | Usage                                                         |
 |--------------------+---------------------------------------------------------------|
