@@ -50,6 +50,7 @@ Then, simply run Emacs.
 | pdf tools          | pdf viewing                                                   |
 | pip requirements   | pip file editing (python)                                     |
 | projectile         | project management                                            |
+| racket mode        | Racket programming                                            |
 | reftex             | LaTeX                                                         |
 | rustic             | rust                                                          |
 | selectrum          | incremental narrowing                                         |
