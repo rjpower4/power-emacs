@@ -1035,7 +1035,37 @@ ring."
 ;; --------------------------------------------------------------------------- #
 (use-package racket-mode
   :straight t
-  :defer t)
+  :defer t
+  :custom
+  (racket--config-dir (concat power-etc-dir "racket/")))
+
+;; --------------------------------------------------------------------------- #
+;;; Treemacs
+;; --------------------------------------------------------------------------- #
+
+(use-package treemacs
+  :straight t
+  :defer t
+  :init
+  (setq treemacs-follow-after-init t
+        treemacs-is-never-other-window t
+        treemacs-sorting 'alphabetic-case-insensitive-asc
+        treemacs-persist-file (concat power-cache-dir "treemacs-last-error-persist")
+        treemacs-git-mode 'simple)
+  :config
+  (treemacs-follow-mode -1))
+
+(use-package treemacs-projectile
+  :straight t
+  :after treemacs)
+
+(use-package treemacs-magit
+  :straight t
+  :after treemacs magit)
+
+(use-package lsp-treemacs
+  :straight t
+  :after (treemacs lsp))
 
 ;; --------------------------------------------------------------------------- #
 ;;; Keybindings
@@ -1043,6 +1073,7 @@ ring."
 (general-define-key
  "M-n" #'forward-paragraph
  "M-p" #'backward-paragraph
+ "C-\\" #'treemacs-select-window
  "C-=" #'power/text-scale-default
  "C-+" #'text-scale-increase
  "C--" #'text-scale-decrease)
