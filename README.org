@@ -51,6 +51,7 @@ Then, simply run Emacs.
 | pip requirements   | pip file editing (python)                                     |
 | projectile         | project management                                            |
 | racket mode        | Racket programming                                            |
+| rainbow delimiters | bracket/parenthesis coloring                                  |
 | reftex             | LaTeX                                                         |
 | rustic             | rust                                                          |
 | selectrum          | incremental narrowing                                         |
