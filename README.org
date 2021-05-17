@@ -6,26 +6,44 @@
 This is my emacs configuration for personal use.
 It is based off of several other emacs configurations.
 It represents a departure away from the vi/m keybindings that I have traditionally used in my editors as I am /trying something new/.
+It is probably not of any use to anyone but me, but feel free to use it as a basis
 
-* Desired Functionalities
-
-** Org Mode
-
-** Programming Languages
-
-The programming languages that I am particularly interested in are listed here in alphabetical order:
-
-*** C/C++
-
-*** Clojure
-
-*** Julia
-
-*** LaTeX
-
-*** Rust
-
-** Non-Goals
-
-*** Generality
-
+* Used Packages
+| Package            | Usage                                                         |
+|--------------------+---------------------------------------------------------------|
+| ace window         | better window switching                                       |
+| all the icons      | icon fonts                                                    |
+| anaconda mode      | python code navigation, completion, documentation, and lookup |
+| auctex             | LaTeX                                                         |
+| avy                | tree-style jump                                               |
+| bibtex             | LaTeX                                                         |
+| cider              | Clojure                                                       |
+| clj-refactor       | Clojure                                                       |
+| clojure mode       | Clojure                                                       |
+| company            | completion                                                    |
+| consult            | better completing read                                        |
+| crux               | miscellaneous extension functions                             |
+| doom themes        | themes                                                        |
+| flycheck           | syntax checking                                               |
+| flyspell           | spell checking                                                |
+| general            | keybinding                                                    |
+| helpful            | enhanced help buffers                                         |
+| julia mode         | Julia                                                         |
+| julia repl         | Julia                                                         |
+| latex preview pane | LaTeX                                                         |
+| lsp                | language server                                               |
+| lsp pyright        | python language server                                        |
+| magit              | git porcelain                                                 |
+| marginalia         | minibuffer marginalia (annotations)                           |
+| modus themes       | themes                                                        |
+| pdf tools          | pdf viewing                                                   |
+| pip requirements   | pip file editing (python)                                     |
+| projectile         | project management                                            |
+| reftex             | LaTeX                                                         |
+| rustic             | rust                                                          |
+| selectrum          | incremental narrowing                                         |
+| smartparens        | bracket matching                                              |
+| straight           | package management                                            |
+| vterm              | better terminal                                               |
+| which key          | keybinding display                                            |
+| yasnippet          | snippets                                                      |
