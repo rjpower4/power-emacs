@@ -261,6 +261,9 @@
 (setq-default truncate-lines t)
 (setq truncate-partial-width-windows nil)
 
+;; Mode Line
+(add-to-list 'mode-line-misc-info '("@" system-name) t)
+
 ;; Text scaling
 (defun power/text-scale-default ()
   "Set the text scale to the default value."
