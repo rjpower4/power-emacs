@@ -110,6 +110,7 @@
       desktop-dirname              (concat power-etc-dir "desktop")
       desktop-base-file-name       "autosave"
       desktop-base-lock-name       "autosave-lock"
+      url-cache-directory          (concat power-cache-dir "url/")
       pcache-directory             (concat power-cache-dir "pcache/")
       request-storage-directory    (concat power-cache-dir "request")
       auto-save-list-file-prefix   (concat power-cache-dir "auto-save/")
