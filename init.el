@@ -48,6 +48,7 @@
 
 ;; Directories
 (defconst power-emacs-dir user-emacs-directory)
+(defconst power-init-file (buffer-file-name))
 (defconst power-local-dir (concat power-emacs-dir ".local/"))
 (defconst power-cache-dir (concat power-local-dir "cache/"))
 (defconst power-core-dir (concat power-local-dir "core/"))
@@ -1281,7 +1282,11 @@ ring."
   "f" '(find-file :wk "find file")
   "r" '(consult-recent-file :wk "recentf")
   "s" '(save-buffer :wk "save buffer")
-  "i" '(crux-find-user-init-file :wk "open init"))
+  "l" '(consult-locate :wk "locate")
+  "i" '(:ignore t :wk "open init")
+  "i e" '(crux-find-user-init-file :wk "emacs")
+  "i c" '(crux-find-user-custom-file :wk "emacs custom")
+  "i s" '(crux-find-shell-init-file :wk "shell"))
 
 ;; Search
 (general-create-definer search-definer
