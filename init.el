@@ -1172,6 +1172,23 @@ ring."
   :after (treemacs lsp))
 
 ;; --------------------------------------------------------------------------- #
+;;; RSS
+;; --------------------------------------------------------------------------- #
+(use-package elfeed
+  :straight t
+  :defer t
+  :config
+  (add-hook 'elfeed-search-mode-hook 'elfeed-update)
+  :custom
+  (elfeed-db-directory (concat power-cache-dir "elfeed/db/"))
+  (elfeed-enclosure-default-dir (concat power-cache-dir "elfeed/enclosures/"))
+  (elfeed-feeds
+   '(("https://feeds.arstechnica.com/arstechnica/features" news tech)
+     ("http://rssfeeds.jconline.com/lafayettein/home" news)
+     ("https://xkcd.com/rss.xml" comic)
+     ("https://julialang.org/feed.xml" tech blog))))
+
+;; --------------------------------------------------------------------------- #
 ;;; Keybindings
 ;; --------------------------------------------------------------------------- #
 (general-define-key
