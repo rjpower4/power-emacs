@@ -655,7 +655,14 @@ ring."
 (use-package eshell
   :straight (eshell :type built-in)
   :custom
-  (eshell-directory-name (concat power-local-dir "eshell/")))
+  (eshell-directory-name (concat power-local-dir "eshell/"))
+  (eshell-scroll-to-bottom-on-input 'all)
+  (eshell-scroll-to-bottom-on-output 'all)
+  (eshell-kill-processes-on-exit t)
+  (eshell-hist-ignoredups t)
+  (eshell-glob-case-insensitive t)
+  (eshell-error-if-no-glob t)
+  (eshell-term-name "xterm-256color"))
 
 ;; --------------------------------------------------------------------------- #
 ;;; Company
