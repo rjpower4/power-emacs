@@ -566,6 +566,18 @@ ring."
   (use-package ripgrep :straight t)
   (projectile-mode +1))
 
+(use-package ibuffer-projectile
+  :straight t
+  :defer t
+  :hook (ibuffer . ibuffer-projectile-set-filter-groups)
+  :custom
+  (ibuffer-projectile-prefix
+   (concat (all-the-icons-octicon "file-directory"
+                                  :face ibuffer-filter-group-name-face
+                                  :v-adjust -0.05
+                                  " ")
+           " Project: ")))
+
 ;; --------------------------------------------------------------------------- #
 ;;; Selectrum
 ;; --------------------------------------------------------------------------- #
