@@ -1161,7 +1161,7 @@ ring."
   :straight t
   :defer t
   :custom
-  (racket--config-dir (concat power-etc-dir "racket/")))
+  (racket-repl-history-directory (concat power-cache-dir "racket/")))
 
 ;; --------------------------------------------------------------------------- #
 ;;; Treemacs
