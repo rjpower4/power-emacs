@@ -58,7 +58,7 @@
 (setq calendar-longitude -86.848460)
 
 ;; Theming preferences
-(defconst power-auto-theme nil)
+(defconst power-auto-theme t)
 
 ;; --------------------------------------------------------------------------- #
 ;;; Startup
