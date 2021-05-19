@@ -480,6 +480,11 @@ ring."
             [mouse-2] 'dired-find-file
             "C-c C-q" 'wdired-change-to-wdired-mode))
 
+(use-package all-the-icons-dired
+  :straight t
+  :defer t
+  :hook (dired-mode . all-the-icons-dired-mode))
+
 ;; --------------------------------------------------------------------------- #
 ;;; Disk Usage
 ;; --------------------------------------------------------------------------- #
