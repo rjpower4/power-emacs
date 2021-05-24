@@ -1004,6 +1004,21 @@ ring."
   :defer t)
 
 ;; --------------------------------------------------------------------------- #
+;;; Web
+;; --------------------------------------------------------------------------- #
+(use-package web-mode
+  :straight t
+  :defer t
+  :custom
+  (web-mode-enable-html-entities-fontification t)
+  (web-mode-auto-close-style 1)
+  (web-mode-enable-auto-quoting nil)
+  (web-mode-enable-auto-pairing t)
+  :config
+  (add-hook 'html-mode-local-vars-hook #'lsp)
+  (add-hook 'web-mode-local-vars-hook #'lsp))
+
+;; --------------------------------------------------------------------------- #
 ;;; Julia
 ;; --------------------------------------------------------------------------- #
 (use-package julia-mode
