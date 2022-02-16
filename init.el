@@ -545,7 +545,9 @@
   (add-hook 'git-commit-mode-hook 'goto-address-mode))
 
 (use-package forge
-  :after magit)
+  :after magit
+  :custom
+  (forge-database-file (concat power-cache-dir "forge-database.sqlite")))
 
 ;; ========================================================================================
 ;;; Selection
