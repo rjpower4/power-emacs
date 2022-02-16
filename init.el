@@ -7,6 +7,9 @@
 ;;
 ;;; Commentary:
 ;;
+;; This is a basic emacs configuration that I've put together by stealing stuff
+;; from a lot of other configurations that I have seen.
+;;
 ;; __________                         ___________                             
 ;; \______   \______  _  __ __________\_   _____/ _____ _____    ____   ______
 ;;  |     ___/  _ \ \/ \/ // __ \_  __ \    __)_ /     \\__  \ _/ ___\ /  ___/
@@ -451,7 +454,9 @@
   (org-tags-column 0)
   (org-support-shift-se)
   (org-directory power-org-dir)
-  (org-agenda-files (list org-directory))
+  (org-agenda-files (list org-directory
+                          (concat org-directory "research/")
+                          (concat org-directory "research/projects/")))
   (org-use-speed-commands (lambda ()
                             (and (looking-at org-outline-regexp)
                                  (looking-back "%\*"))))
@@ -479,6 +484,19 @@
      (latex . t)
      (octave . t)
      (python . t))))
+
+(use-package reftex
+  :commands turn-on-reftex
+  :init
+  (setq reftex-plug-intoAUCTex t))
+
+
+(use-package org-ref
+  :after org
+  :demand t
+  :general
+  (:keymaps 'org-mode-map
+            "C-c ]" 'org-ref-insert-link))
 
 ;; ========================================================================================
 ;;; Window Management
@@ -526,6 +544,9 @@
   (require 'git-commit)
   (add-hook 'git-commit-mode-hook 'goto-address-mode))
 
+(use-package forge
+  :after magit)
+
 ;; ========================================================================================
 ;;; Selection
 ;; ========================================================================================
@@ -547,10 +568,58 @@
 ;;; Consult
 ;; ========================================================================================
 (use-package consult
+  :defer nil
   :init
-  (setq register-preview-delay 0
+  (setq register-preview--delay 0
         register-preview-function #'consult-register-format)
-  (advice-add #'register-preview :override #'consult-register-window))
+  (advice-add #'register-preview :override #'consult-register-window)
+  :general
+  ;; Buffer and Window Management
+  ("C-x b"  'consult-buffer)
+  ("C-x 4 b" 'consult-buffer-other-window)
+
+  ;; Help
+  ("<help> a" 'consult-apropos)
+
+  ;; Go To
+  ("M-g g" 'consult-goto-line) ;; overwriting the default goto line
+  ("M-g l" 'consult-goto-line)
+  
+  ;; Searching
+  ("M-s r" 'consult-ripgrep)
+  ("M-s u" 'consult-focus-lines)
+  ("M-s i" 'consult-imenu)
+  ("M-s l" 'consult-line))
+
+;; ========================================================================================
+;;; Embark
+;; ========================================================================================
+(use-package embark
+  :general
+  ("C-." 'embark-act)
+  ("C-;" 'embark-dwim)  
+  ("C-h B" 'embark-bindings)
+
+  :init
+  ;; Optionally replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
+
+  :config
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
+
+;; Consult users will also want the embark-consult package.
+(use-package embark-consult
+  :ensure t
+  :after (embark consult)
+  :demand t ; only necessary if you have the hook below
+  ;; if you want to have consult previews as you move around an
+  ;; auto-updating embark collect buffer
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
 
 ;; ========================================================================================
 ;;; Projectile
@@ -562,6 +631,7 @@
   :init
   (setq projectile-mode-line-prefix ""
         projectile-sort-order 'recentf
+        projectile-enable-caching t
         projectile-use-git-grep t
         projectile-cache-file (concat power-cache-dir "projectile.cache")
         projectile-auto-discover nil
@@ -597,6 +667,8 @@
 ;; ========================================================================================
 (use-package treemacs
   :defer t
+  :general
+  ("M-[" 'treemacs-select-window)
   :init
   (setq treemacs-follow-after-init t
         treemacs-is-never-other-window t
@@ -720,6 +792,10 @@
 (use-package julia-mode
   :defer t)
 
+(use-package julia-snail
+  :defer t
+  :hook (julia-mode . julia-snail-mode))
+
 ;; ========================================================================================
 ;;; Python
 ;; ========================================================================================
@@ -745,15 +821,7 @@
 ;;; Data Files
 ;; ========================================================================================
 (use-package csv-mode
-  :defer t
-  :general)
-  ;;(:keymaps 'csv-mode-map
-   ;;         "C-c m a" #'csv-align-fields
-    ;;        "C-c m u" #'csv-unalign-fields
-     ;;       "C-c m s" #'csv-sort-fields
-       ;;     "C-c m S" #'csv-sort-numeric-fields
-         ;;   "C-c m k" #'csv-kill-fields
-           ;; "C-c m t" #'csv-transpose))
+  :defer t)
 
 (use-package json-mode
   :defer t)
@@ -803,6 +871,8 @@
   (TeX-byte-compile t)
   (TeX-clean-confirm nil)
   (TeX-fontify-script nil)
+  (font-latex-fontify-script nil)
+  (font-latex-fontify-sectioning 'color)
   (font-latex-fontify-script nil)
   (TeX-master 'dwim)
   (TeX-parse-self t)
@@ -874,10 +944,51 @@
                 (lambda () (* (/ 10.0 (preview-document-pt)) preview-scale))))
 
 ;; ========================================================================================
+;;; Cider
+;; ========================================================================================
+(use-package clojure-mode
+  :config
+  (use-package clojure-mode-extra-font-locking))
+
+(use-package cider
+  :defer t
+  :diminish
+  :config
+  (add-hook 'cider-repl-mode-hook #'subword-mode)
+  (add-hook 'cider-repl-mode-hook #'company-mode)
+  :custom
+   (nrepl-hide-special-buffers t)
+  (nrepl-log-messages nil)
+  (cider-font-lock-dynamically '(macro core function var deprecated))
+  (cider-overlays-use-font-lock t)
+  (cider-prompt-for-symbol nil)
+  (cider-repl-history-display-duplicates nil)
+  (cider-repl-history-display-stile 'one-line)
+  (cider-repl-history-file (concat power-cache-dir "cider-repl-history"))
+  (cider-repl-history-highlight-current-entry t)
+  (cider-repl-history-quit-action 'delete-and-restore)
+  (cider-repl-history-highlight-inserted-item t)
+  (cider-repl-history-size 1000)
+  (cider-repl-result-prefix ";; => ")
+  (cider-repl-print-length 100)
+  (cider-repl-user-clojure-font-lock t)
+  (cider-repl-use-pretty-printing t)
+  (cider-repl-wrap-history nil)
+  (cider-save-file-on-load t)
+  (cider-stacktrace-default-filters '(tooling dup))
+  (cider-repl-pop-to-buffer-on-connect 'display-only))
+
+;; ========================================================================================
+;;; Common Lisp
+;; ========================================================================================
+(use-package slime
+  :init
+  (setq inferior-lisp-program "sbcl"))
+
+;; ========================================================================================
 ;;; Theming
 ;; ========================================================================================
 (use-package modus-themes
-  :after consult
   :custom
   (modus-themes-bold-constructs t)
   (modus-themes-completions 'nil)
@@ -889,16 +1000,16 @@
   (modus-themes-mail-citations nil)
   (modus-themes-mode-line nil)
   (modus-themes-org-blocks nil)
-  (modus-themes-paren-match 'intense-bold)
-  (modus-themes-prompts 'intense-gray)
-  (modus-themes-region 'bg-only-no-extend)
-  (modus-themes-scale-headings nil)
-  (modus-themes-syntax 'yellow-comments-green-strings)
-  (modus-themes variable-pitch-headings nil)
-  (modus-themes-variable-pitch-ui nil)
-  (modus-themes-slanted-constructs t)
+  ;; (modus-themes-paren-match 'intense-bold)
+  ;; (modus-themes-prompts 'intense-gray)
+  ;; (modus-themes-region 'bg-only-no-extend)
+  ;; (modus-themes-scale-headings nil)
+  ;; (modus-themes-syntax 'yellow-comments-green-strings)
+  ;; (modus-themes variable-pitch-headings nil)
+  ;; (modus-themes-variable-pitch-ui nil)
+  ;; (modus-themes-slanted-constructs t)
   :config
-  (consult-theme 'modus-vivendi))
+  (consult-theme 'modus-operandi))
 
 (use-package all-the-icons)
 
