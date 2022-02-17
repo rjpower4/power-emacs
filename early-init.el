@@ -7,8 +7,17 @@
 ;;
 ;;; Code:
 
+;; ------------------------------------------------------------------------------
+;; Garbage Collection
+;; ------------------------------------------------------------------------------
 (setq gc-cons-threshold most-positive-fixnum)
 (setq package-enable-at-startup nil)
+
+;; ------------------------------------------------------------------------------
+;; File loading
+;; ------------------------------------------------------------------------------
+(setq load-prefer-newer noninteractive)
+
 
 (unless (daemonp)
   (defvar power--initial-file-name-handler-alist file-name-handler-alist)
@@ -19,9 +28,12 @@
       (add-to-list 'power--initial-file-name-handler-alist handler))
     (setq file-name-handler-alist power--initial-file-name-handler-alist))
   (add-hook 'emacs-startup-hook #'power/reset-file-handler-alist-h))
-  
-;;(menu-bar-mode -1)
-;;(push '(tool-bar-lines . 0) default-frame-alist)
+
+;; ------------------------------------------------------------------------------
+;; UI
+;; ------------------------------------------------------------------------------
+(menu-bar-mode -1)
+(push '(tool-bar-lines . 0) default-frame-alist)
 (push '(vertical-scroll-bars) default-frame-alist)
 
 (setq-default inhibit-redisplay t
@@ -35,6 +47,11 @@
 ;; Welcome to the future
 (set-language-environment "UTF-8")
 (setq default-input-method nil)
+
+;; ------------------------------------------------------------------------------
+;; Packaging
+;; ------------------------------------------------------------------------------
+(setq package-enable-at-startup nil)
 
 (provide 'early-init)
 ;;; early-init.el ends here
