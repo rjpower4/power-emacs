@@ -4,6 +4,7 @@
 (straight-use-package 'diminish)
 (straight-use-package 'general)
 (straight-use-package 'crux)
+(straight-use-package 'treemacs)
 
 ;; Diminished
 (diminish 'eldoc-mode)
@@ -45,6 +46,15 @@
  "C-k" #'crux-smart-kill-line
  "C-<backspace>" #'crux-kill-line-backwards)
 
+;; Treemacs
+(general-define-key
+ "M-[" 'treemacs-select-window)
+(setq treemacs-follow-after-init t
+      treemacs-is-never-other-window t
+      treemacs-sorting 'alphabetic-case-insensitive-asc
+      treemacs-persist-file (concat power-cache-dir "treemacs-last-error-persist")
+      treemacs-git-mode 'simple)
+
 ;; ========================================================================================
 ;;; Mode Hiding Utility
 ;; ========================================================================================
@@ -65,13 +75,6 @@
 ;;         treemacs-git-mode 'simple)
 ;;   :config
 ;;   (treemacs-follow-mode -1))
-
-;; ========================================================================================
-;;; Crux
-;; ========================================================================================
-;; (use-package crux
-;;   :config
-  ;; (defalias 'rename-file-and-buffer #'crux-rename-file-and-buffer))
 
 ;; ========================================================================================
 ;;; Company
