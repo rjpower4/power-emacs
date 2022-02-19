@@ -68,10 +68,23 @@
    (octave . t)
    (python . t)))
 
+;; Functions
+(defun power/find-org-homebase ()
+  "Open the homebase org file."
+  (interactive)
+  (find-file (concat power-org-dir "homebase.org")))
+
 ;; Keybindings
+(power-open-def
+  "a" #'org-agenda
+  "c" #'org-capture
+  "h" #'consult-org-agenda
+  "H" '(power/find-org-homebase :which-key "home"))
+
 (general-define-key
  :keymaps 'org-mode-map
- "C-c ]" 'org-ref-insert-link)
+ "C-c ]" #'org-ref-insert-link
+ "C-c r" #'org-refile)
 
 (provide 'power-org)
 ;;; power-org.el ends here

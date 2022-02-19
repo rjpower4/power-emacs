@@ -7,12 +7,16 @@
 (straight-use-package 'treemacs-magit)
 
 ;; Configuration
-
 (setq transient-levels-file  (concat power-etc-dir "transient/levels")
       transient-values-file  (concat power-etc-dir "transient/values")
       transient-history-file (concat power-etc-dir "transient/history"))
 (setq-default magit-diff-refine-hunk t)
 (add-hook 'git-commit-mode-hook 'goto-address-mode)
 (setq forge-database-file (concat power-cache-dir "forge-database.sqlite"))
+
+;; Keybinding
+(power-git-def
+  "g" #'magit-status
+  "s" #'magit-status)
 
 (provide 'power-vcs)

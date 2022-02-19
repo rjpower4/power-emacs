@@ -3,9 +3,47 @@
 ;; Desired packages
 (straight-use-package 'diminish)
 (straight-use-package 'general)
+(straight-use-package 'crux)
 
 ;; Diminished
 (diminish 'eldoc-mode)
+
+;; Keybinding Infrastructure
+(defconst power-leader "C-c")
+(defun power--create-top-level-binding-string (c)
+  (concat power-leader " " c))
+
+(general-create-definer power-def
+  :prefix power-leader)
+
+(power-def
+  "f" '(:ignore t :which-key "file")
+  "g" '(:ignore t :which-key "git")
+  "o" '(:ignore t :which-key "org"))
+
+(general-create-definer  power-file-def
+  :prefix (power--create-top-level-binding-string "f"))
+
+(general-create-definer power-git-def
+  :prefix (power--create-top-level-binding-string "g"))
+
+(general-create-definer  power-open-def
+  :prefix (power--create-top-level-binding-string "o"))
+
+(general-create-definer power-file-def
+  :prefix "C-c f")
+
+;; Simple Keybindings
+(power-file-def "i" '(crux-find-user-init-file :which-key "init"))
+
+;; Crux Configuration
+(defalias 'rename-file-and-buffer #'crux-rename-file-and-buffer)
+(general-define-key
+ [remap move-beginning-of-line] #'crux-move-beginning-of-line
+ [remap kill-whole-line] #'crux-kill-whole-line
+ [(shift return)] #'crux-smart-open-line
+ "C-k" #'crux-smart-kill-line
+ "C-<backspace>" #'crux-kill-line-backwards)
 
 ;; ========================================================================================
 ;;; Mode Hiding Utility
