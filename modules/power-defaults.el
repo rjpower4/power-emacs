@@ -28,10 +28,12 @@
 (setq gnutls-verify-error t)
 
 (setq async-byte-compile-log-file  (concat power-etc-dir "async-bytecomp.log")
+      bookmark-file                (concat power-etc-dir "bookmarks")
       custom-file                  (concat power-etc-dir "custom.el")
       desktop-dirname              (concat power-etc-dir "desktop")
       desktop-base-file-name       "autosave"
       desktop-base-lock-name       "autosave-lock"
+      tramp-persistency-file-name  (concat power-cache-dir "tramp")
       url-cache-directory          (concat power-cache-dir "url/")
       pcache-directory             (concat power-cache-dir "pcache/")
       request-storage-directory    (concat power-cache-dir "request")
