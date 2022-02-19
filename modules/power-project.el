@@ -28,7 +28,9 @@
  :keymaps 'projectile-mode-map
  "C-x p" #'projectile-command-map)
 (general-define-key
- "C-c C-p" #'projectile-commander)
+ "C-c p p" #'projectile-switch-project
+ "C-c p r" #'projectile-ripgrep
+ "C-c p f" #'projectile-find-file)
 
 
 
