@@ -15,8 +15,8 @@
       eshell-error-if-no-glob t
       eshell-term-name "xterm-256color")
 
-(exec-path-from-shell-copy-env "JULIA_DEPOT_PATH")
 (when (or IS-MAC IS-LINUX IS-BSD)
+  (exec-path-from-shell-copy-env "JULIA_DEPOT_PATH")
   (exec-path-from-shell-initialize))
 
 (provide 'power-term)
