@@ -27,6 +27,8 @@
             (diminish 'company-mode)))
 
 ;; Keybinding
+(power-file-def "r" #'consult-recent-file)
+
 (general-define-key
  "C-." #'embark-act
  "C-x b" #'consult-buffer
