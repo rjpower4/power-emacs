@@ -2,8 +2,14 @@
 
 ;; Desired Packages
 (straight-use-package 'org-ref)
+(straight-use-package 'org-journal)
 
 ;; Configuration
+(setq org-journal-dir (expand-file-name "journal/" power-org-dir)
+      org-journal-file-format "%Y-%m-%d.org"
+      org-journal-date-format "%e %b %Y (%A)"
+      org-journal-date-prefix "#+TITLE: "
+      org-journal-time-format "")
 (setq power-org-main-file (concat power-org-dir "homebase.org"))
 (setq org-confirm-babel-evaluate nil
       org-edit-src-content-indentation 0
@@ -12,8 +18,7 @@
       org-support-shift-select t
       org-directory power-org-dir
       org-agenda-files (list power-org-dir
-                             (concat power-org-dir "research/")
-                             (concat power-org-dir "research/projects/"))
+                             org-journal-dir)
       org-refile-targets '((org-agenda-files . (:maxlevel . 6)))
       org-use-speed-commands (lambda ()
                                (and (looking-at org-outline-regexp)
