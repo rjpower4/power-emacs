@@ -56,7 +56,7 @@
 (defconst power-etc-dir (concat power-local-dir "etc/"))
 (defconst power-org-dir
   (if IS-WINDOWS
-      "C:\\Users\\rolfe\\Dropbox\\Org\\"
+      "C:\\Users\\rolfe\\Dropbox\\notes\\org\\"
     (concat (file-name-as-directory (getenv "HOME")) "Dropbox/Org/")))
 
 ;; -- Location
