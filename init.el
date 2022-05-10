@@ -664,18 +664,37 @@
             "M-]" #'outline-next-heading))
 
 ;; ========================================================================================
-;;; C/C++
+;;; Version Control
 ;; ========================================================================================
+(use-package magit
+  :straight t
+  :hook
+  (git-commit-mode . goto-address-mode)
+  :init
+  (setq-default magit-diff-refine-hunk t)
+  :config
+  (use-package magit-todos :straight t)
+  :custom
+  (transient-levels-file  (concat power-etc-dir "transient/levels"))
+  (transient-values-file  (concat power-etc-dir "transient/values"))
+  (transient-history-file (concat power-etc-dir "transient/history"))
+  :general
+  ("C-c g g" #'magit-status
+   "C-c g s" #'magit-status))
+
+
+;; ========================================================================================
+;;; Programming Languages
+;; ========================================================================================
+
+;; C/C++ ----------------------------------------------------------------------------------
 (use-package modern-cpp-font-lock
   :straight t
   :hook
   (after-init . (lambda () (modern-c++-font-lock-global-mode t)))
   (c-mode-common . (lambda () (c-set-style "stroustrup"))))
 
-
-;; ========================================================================================
-;;; Clojure
-;; ========================================================================================
+;; Clojure --------------------------------------------------------------------------------
 (use-package clojure-mode
   :straight t
   :custom
@@ -703,45 +722,20 @@
   (use-package clojure-mode-extra-font-locking :straight t)
   (use-package cider :straight t))
 
-;; ========================================================================================
-;;; Common Lisp
-;; ========================================================================================
+;; Common Lisp ----------------------------------------------------------------------------
 (use-package sly
   :straight t
   :custom
   (inferior-lips-program sbcl))
 
-;; ========================================================================================
 ;;; Data Markup
-;; ========================================================================================
 (use-package csv-mode
   :straight t)
 
 (use-package json-mode
   :straight t)
 
-;; ========================================================================================
-;;; Git
-;; ========================================================================================
-(use-package magit
-  :straight t
-  :hook
-  (git-commit-mode . goto-address-mode)
-  :init
-  (setq-default magit-diff-refine-hunk t)
-  :config
-  (use-package magit-todos :straight t)
-  :custom
-  (transient-levels-file  (concat power-etc-dir "transient/levels"))
-  (transient-values-file  (concat power-etc-dir "transient/values"))
-  (transient-history-file (concat power-etc-dir "transient/history"))
-  :general
-  ("C-c g g" #'magit-status
-   "C-c g s" #'magit-status))
-
-;; ========================================================================================
-;;; Julia
-;; ========================================================================================
+;; Julia ----------------------------------------------------------------------------------
 (use-package julia-mode
   :straight t)
 
@@ -750,9 +744,7 @@
   :after julia-mode
   :hook (julia-mode . julia-snail-mode))
 
-;; ========================================================================================
-;;; Python
-;; ========================================================================================
+;; Python ---------------------------------------------------------------------------------
 (use-package python
   :straight (:type built-in)
   :config
@@ -760,32 +752,9 @@
              (string= python-shell-interpreter "python"))
     (setq python-shell-interpreter "python3")))
 
-
-;; ========================================================================================
-;;; Racket
-;; ========================================================================================
+;; Racket ---------------------------------------------------------------------------------
 (use-package racket-mode
   :straight t)
-;; ========================================================================================
-;;; Modules
-;; ========================================================================================
-;(require 'power-core)
-;(require 'power-themes)
-;(require 'power-help)
-;(require 'power-selection)
-;(require 'power-term)
-
-;(require 'power-edit)
-;(require 'power-filesystem)
-;(require 'power-base-devel)
-;(require 'power-org)
-;(require 'power-publishing)
-;(require 'power-science)
-;(require 'power-lisp)
-;(require 'power-vcs)
-;;(require 'power-project)
-
-
 
 (provide 'init)
 ;;; init.el ends here
