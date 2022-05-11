@@ -30,10 +30,6 @@
                                                         before-init-time)))
                      gcs-done)))
 
-(defvar power-gc-cons-threshold (* 128 (* 1024 1024)))
-(add-hook 'emacs-startup-hook
-          (lambda () (setq gc-cons-threshold power-gc-cons-threshold)))
-
 ;; ========================================================================================
 ;;; Basic Constants and Configuration Variables
 ;; ========================================================================================
@@ -50,7 +46,7 @@
 ;; -- Directories
 (defconst power-emacs-dir user-emacs-directory)
 (defconst power-init-file (buffer-file-name))
-(defconst power-local-dir (concat power-emacs-dir ".local/"))
+(defconst power-local-dir (concat power-emacs-dir "local/"))
 (defconst power-cache-dir (concat power-local-dir "cache/"))
 (defconst power-core-dir (concat power-local-dir "core/"))
 (defconst power-etc-dir (concat power-local-dir "etc/"))
@@ -274,14 +270,23 @@
                                    regexp-search-ring
                                    extended-command-history))
   (savehist-autosave-interval 300)
-  (savehist-file (concat power-cache-dir "history")))
+  (savehist-file (concat power-cache-dir "history"))
+  (put 'minibuffer-history         'history-length 50)
+  (put 'file-name-history          'history-length 50)
+  (put 'set-variable-value-history 'history-length 25)
+  (put 'custom-variable-history    'history-length 25)
+  (put 'query-replace-history      'history-length 25)
+  (put 'read-expression-history    'history-length 25)
+  (put 'read-char-history          'history-length 25)
+  (put 'face-name-history          'history-length 25)
+  (put 'bookmark-history           'history-length 25))
 
 (use-package save-place
   :straight (:type built-in)
   :hook
   (after-init . save-place-mode)
   :custom
-  (save-place-limit 500)
+  (save-place-limit 1000)
   (save-place-file (concat power-cache-dir "places")))
 
 
@@ -395,10 +400,12 @@
 (use-package helpful
   :straight t
   :general
-  ("C-h v" #'helpful-variable)
-  ("C-h f" #'helpful-callable)
-  ("C-h C-h" #'helpful-at-point)
-  ("C-h k" #'helpful-key)
+  ("C-h f"    #'helpful-callable
+   "C-h v"    #'helpful-variable
+   "C-h k"    #'helpful-key
+   "C-c C-d"  #'helpful-at-point
+   "C-h F"    #'helpful-function
+   "C-h C"    #'helpful-command)
   :custom
   (which-key-sort-order #'which-key-key-order-alpha)
   (which-key-sort-uppercase-first nil)
@@ -443,6 +450,17 @@
   :config
   (load-theme 'modus-vivendi t))
 
+;; ========================================================================================
+;;; Buffers
+;; ========================================================================================
+(use-package uniquify
+  :straight (:type built-in)
+  :custom
+  (temp-buffer-max-height 8)
+  (uniquify-buffer-name-style 'reverse)
+  (uniquify-separator " • ")
+  (uniquify-after-kill-buffer-p t)
+  (uniquify-ignore-buffers-re "^\\*"))
 
 ;; ========================================================================================
 ;;; Minibuffer
@@ -451,6 +469,10 @@
   :straight t
   :config
   (customize-set-variable 'vertico-cycle t)
+  :custom
+  (vertico-resize nil)
+  (vertico-count 10)
+  (vertico-count-format nil)
   :hook
   (after-init . vertico-mode))
 
@@ -465,11 +487,19 @@
 
 (use-package marginalia
   :straight t
-  :hook
-  (after-init . marginalia-mode)
-  :custom
-  (marginalia-annotators
-      '(marginalia-annotators-heavy marginalia-annotators-light nil)))
+  ;; Either bind `marginalia-cycle` globally or only in the minibuffer
+  :bind (("M-A" . marginalia-cycle)
+         :map minibuffer-local-map
+         ("M-A" . marginalia-cycle))
+  :config
+  (setq-default marginalia--ellipsis "…"
+                marginalia-align 'right
+                marginalia-align-offset -1)
+  ;; The :init configuration is always executed (Not lazy!)
+  :init
+  ;; Must be in the :init section of use-package such that the mode gets
+  ;; enabled right away. Note that this forces loading the package.
+  (marginalia-mode))
 
 (use-package embark
   :straight t
@@ -478,6 +508,39 @@
   :custom
   (prefix-help-command #'embark-prefix-help-command))
 
+;; ========================================================================================
+;;; Completion
+;; ========================================================================================
+(use-package corfu
+  :straight t
+  :custom
+  (corfu-cycle t)                ; Enable cycling for `corfu-next/previous'
+  (corfu-auto t)                 ; Enable auto completion
+  (corfu-separator ?\s)          ; Orderless field separator
+  (corfu-quit-at-boundary nil)   ; Never quit at completion boundary
+  (corfu-quit-no-match nil)      ; Never quit, even if there is no match
+  (corfu-preview-current nil)    ; Disable current candidate preview
+  (corfu-preselect-first nil)    ; Disable candidate preselection
+  (corfu-on-exact-match nil)     ; Configure handling of exact matches
+  (corfu-echo-documentation nil) ; Disable documentation in the echo area
+  (corfu-scroll-margin 5)
+  (completion-cycle-threshold 3)
+  (read-extended-command-predicate #'command-completion-default-include-p)
+  (tab-always-indent 'complete)
+  :config
+  (global-corfu-mode))
+
+;; ========================================================================================
+;;; Snippets
+;; ========================================================================================
+(use-package yasnippet
+  :straight t
+  :defer t
+  :config
+  (use-package yasnippet-snippets
+    :straight t)
+  (yas-global-mode)
+  (diminish 'yas-minor-mode))
 
 ;; ========================================================================================
 ;;; Consult
@@ -498,7 +561,7 @@
    "M-s u" #'consult-focus-lines
    "M-s i" #'consult-imenu
    "M-s l" #'consult-line
-   "C-c f r" #' consult-recent-file))
+   "C-c f r" #'consult-recent-file))
 
 ;; ========================================================================================
 ;;; Terminals and Shells
@@ -684,8 +747,23 @@
 
 
 ;; ========================================================================================
-;;; Programming Languages
+;;; Programming
 ;; ========================================================================================
+;;  Language Server Implementation
+(use-package lsp-mode
+  :straight t
+  :defer t
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :hook
+  ((c-mode . lsp)
+   (c++-mode . lsp))
+  :commands lsp)
+
+(use-package lsp-ui
+  :straight t
+  :defer t
+  :commands lsp-ui-mode)
 
 ;; C/C++ ----------------------------------------------------------------------------------
 (use-package modern-cpp-font-lock
@@ -697,6 +775,7 @@
 ;; Clojure --------------------------------------------------------------------------------
 (use-package clojure-mode
   :straight t
+  :defer t
   :custom
   (nrepl-hide-special-buffers t)
   (nrepl-log-messages nil)
@@ -725,19 +804,28 @@
 ;; Common Lisp ----------------------------------------------------------------------------
 (use-package sly
   :straight t
+  :defer t
   :custom
   (inferior-lips-program sbcl))
 
-;;; Data Markup
+;; Data Markup ----------------------------------------------------------------------------
 (use-package csv-mode
+  :defer t
   :straight t)
 
 (use-package json-mode
+  :straight t
+  :defer t)
+
+
+;; Go -------------------------------------------------------------------------------------
+(use-package go-mode
   :straight t)
 
 ;; Julia ----------------------------------------------------------------------------------
 (use-package julia-mode
-  :straight t)
+  :straight t
+  :defer t)
 
 (use-package julia-snail
   :straight t
@@ -747,10 +835,32 @@
 ;; Python ---------------------------------------------------------------------------------
 (use-package python
   :straight (:type built-in)
+  :custom
+  (python-indent-guess-indent-offset-verbose nil)
   :config
   (when (and (executable-find "python3")
              (string= python-shell-interpreter "python"))
     (setq python-shell-interpreter "python3")))
+
+(use-package blacken
+  :straight t
+  :after python
+  :diminish blacken-mode
+  :defer t
+  :hook
+  (python-mode . blacken-mode))
+
+(use-package lsp-pyright
+  :straight t
+  :defer t
+  :hook
+  (python-mode . (lambda () (require 'lsp-pyright) (lsp-deferred)))
+  :custom
+  (lsp-pyright-disable-language-service nil)
+  (lsp-pyright-disable-organize-imports nil)
+  (lsp-pyright-auto-import-completions t)
+  (lsp-pyright-use-library-code-for-types t))
+
 
 ;; Racket ---------------------------------------------------------------------------------
 (use-package racket-mode

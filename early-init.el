@@ -8,13 +8,18 @@
 ;;; Code:
 
 ;; ------------------------------------------------------------------------------
-;; Garbage Collection
+;;; Garbage Collection
 ;; ------------------------------------------------------------------------------
-(setq gc-cons-threshold most-positive-fixnum)
-(setq package-enable-at-startup nil)
+(setq gc-cons-threshold most-positive-fixnum
+      package-enable-at-startup nil
+      inhibit-default-init t)
+
+;; Reset to  8Mb
+(add-hook 'after-init-hook
+          #'(lambda () (setq gc-cons-threshold (* 120 1024 1024))))
 
 ;; ------------------------------------------------------------------------------
-;; File loading
+;;; File loading
 ;; ------------------------------------------------------------------------------
 (setq load-prefer-newer noninteractive)
 
@@ -30,7 +35,7 @@
   (add-hook 'emacs-startup-hook #'power/reset-file-handler-alist-h))
 
 ;; ------------------------------------------------------------------------------
-;; UI
+;;; UI
 ;; ------------------------------------------------------------------------------
 (menu-bar-mode -1)
 (push '(tool-bar-lines . 0) default-frame-alist)
@@ -47,11 +52,6 @@
 ;; Welcome to the future
 (set-language-environment "UTF-8")
 (setq default-input-method nil)
-
-;; ------------------------------------------------------------------------------
-;; Packaging
-;; ------------------------------------------------------------------------------
-(setq package-enable-at-startup nil)
 
 (provide 'early-init)
 ;;; early-init.el ends here
