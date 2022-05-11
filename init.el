@@ -434,7 +434,7 @@
   (modus-themes-no-mixed-fonts t)
   (modus-themes-diffs 'desaturated)
   (modus-themes-fringes 'intense)
-  (modus-themes-lang-checkers 'colored-background)
+  (modus-themes-lang-checkers '(background))
   (modus-themes-links nil)
   (modus-themes-mail-citations nil)
   (modus-themes-mode-line nil)
