@@ -10,10 +10,10 @@
 ;; This is a basic emacs configuration that I've put together by stealing stuff
 ;; from a lot of other configurations that I have seen.
 ;;
-;; __________                         ___________                             
+;; __________                         ___________
 ;; \______   \______  _  __ __________\_   _____/ _____ _____    ____   ______
 ;;  |     ___/  _ \ \/ \/ // __ \_  __ \    __)_ /     \\__  \ _/ ___\ /  ___/
-;;  |    |  (  <_> )     /\  ___/|  | \/        \  Y Y  \/ __ \\  \___ \___ \ 
+;;  |    |  (  <_> )     /\  ___/|  | \/        \  Y Y  \/ __ \\  \___ \___ \
 ;;  |____|   \____/ \/\_/  \___  >__| /_______  /__|_|  (____  /\___  >____  >
 ;;                             \/             \/      \/     \/     \/     \/
 ;;
@@ -23,12 +23,11 @@
 ;;; Garbage Collection and Benchmarking
 ;; ========================================================================================
 (add-hook 'emacs-startup-hook
-          (lambda ()
-            (message "Power Emacs ready in %s with %d garbage collections."
-                     (format "%.2f seconds"
-                             (float-time (time-subtract after-init-time
-                                                        before-init-time)))
-                     gcs-done)))
+          (lambda () (message "Power Emacs ready in %s with %d garbage collections."
+                              (format "%.2f seconds"
+                                      (float-time (time-subtract after-init-time
+                                                                 before-init-time)))
+                              gcs-done)))
 
 ;; ========================================================================================
 ;;; Basic Constants and Configuration Variables
@@ -45,10 +44,8 @@
 
 ;; -- Directories
 (defconst power-emacs-dir user-emacs-directory)
-(defconst power-init-file (buffer-file-name))
 (defconst power-local-dir (concat power-emacs-dir "local/"))
 (defconst power-cache-dir (concat power-local-dir "cache/"))
-(defconst power-core-dir (concat power-local-dir "core/"))
 (defconst power-etc-dir (concat power-local-dir "etc/"))
 (defconst power-org-dir
   (if IS-WINDOWS
@@ -62,8 +59,13 @@
 ;; ========================================================================================
 ;;; Straight Bootstrap
 ;; ========================================================================================
-(setq straight-base-dir (file-truename power-local-dir)
-      straight-build-dir (format "build-%s" emacs-version))
+(setq load-prefer-newer t
+      straight-base-dir (file-truename power-local-dir)
+      straight-build-dir (format "build-%s" emacs-version)
+      straight-cache-autoloads t
+      straight-check-for-modifications '(check-on-save find-when-checking)
+      straight-use-package-by-default t)
+
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" straight-base-dir))
@@ -94,6 +96,22 @@
   (diminish 'eldoc-mode))
 
 ;; ========================================================================================
+;;; Performance
+;; ========================================================================================
+(use-package gcmh
+  :demand
+  :diminish gcmh-mode
+  :hook
+  (focus-out-hook . gcmh-idle-garbage-collect)
+
+  :custom
+  (gcmh-idle-delay 10)
+  (gcmh-high-cons-threshold 104857600)
+
+  :config
+  (gcmh-mode +1))
+
+;; ========================================================================================
 ;;; Basic Settings
 ;; ========================================================================================
 (use-package power-defaults
@@ -111,7 +129,7 @@
                 display-line-numbers-width 4
                 display-line-numbers-widen t)
   (add-to-list 'mode-line-misc-info '("@" system-name) t)
-  
+
   (unless IS-LINUX (setq command-line-x-option-alist nil))
   (unless IS-MAC   (setq command-line-ns-option-alist nil))
   (when IS-WINDOWS
@@ -129,7 +147,7 @@
   (inhibit-startup-echo-area-message user-login-name)
   (inhibit-default-init t)
   (initial-major-mode 'emacs-lisp-mode)
-  
+
   (auto-mode-case-fold nil)
   (bidi-inhibit-bpa t)
   (highlight-nonselected-windows nil)
@@ -235,11 +253,9 @@
   (minibuffer-setup . cursor-intangible-mode)
   ((prog-mode text-mode conf-mode) . display-line-numbers-mode)
   (after-init . (lambda () (display-time-mode 1)))
-  
+
 
   :config)
-
-
 
 ;; ========================================================================================
 ;;; History
@@ -368,13 +384,13 @@
   (auto-revert-verbose nil)
 
   (delete-by-moving-to-trash t)         ; Separation anxiety
-  (load-prefer-newer t)                 ; Get newest
+
 
   (auto-revert-use-notify nil)
   (auto-revert-interval 3)              ; 3 seconds
   :hook
   ;; Use '-' to go up a directory
-  (dired-mode . 
+  (dired-mode .
               (lambda () (local-set-key (kbd "-") (lambda () (interactive)
                                                     (find-alternate-file ".."))))))
 ;; ========================================================================================
@@ -535,12 +551,15 @@
 ;; ========================================================================================
 (use-package yasnippet
   :straight t
-  :defer t
   :config
-  (use-package yasnippet-snippets
-    :straight t)
   (yas-global-mode)
   (diminish 'yas-minor-mode))
+
+
+(use-package yasnippet-snippets
+  :straight t
+  :after yasnippet
+  :defer t)
 
 ;; ========================================================================================
 ;;; Consult
@@ -674,7 +693,7 @@
    "C-c o h" #'consult-org-agenda)
   (:keymaps 'org-mode-map
             "C-c r" #'org-refile ))
-  
+
 
 (use-package tex
   :straight auctex

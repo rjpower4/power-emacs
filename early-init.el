@@ -12,6 +12,7 @@
 ;; ------------------------------------------------------------------------------
 (setq gc-cons-threshold most-positive-fixnum
       package-enable-at-startup nil
+      frame-inhibit-implied-resize t
       inhibit-default-init t)
 
 ;; Reset to  8Mb
